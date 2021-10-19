@@ -1,0 +1,42 @@
+- hosts: all
+  become: yes
+  tasks:
+    - name: "Update Apt"
+      apt:
+        update_cache: yes
+    - name: "Install prerequisits"
+      apt:
+        name: "{{ packages }}"
+      vars:
+        packages:
+          - apt-transport-https
+          - ca-certificates
+          - curl
+          - software-properties-common
+          - python3-pip
+    - name: "Add Docker signing key"
+      apt_key:
+        url: https://download.docker.com/linux/ubuntu/gpg
+        state: present
+    - name: "Add Docker Repository"
+      apt_repository:
+        repo: deb [arch=amd64] https://download.docker.com/linux/ubuntu xenial stable
+        state: present
+    - name: "Update Apt"
+      apt:
+        update_cache: yes
+    - name: "Install docker-ce"
+      apt:
+        name: docker-ce
+        state: present
+    - name: "Install docker-py"
+      pip:
+        name: docker-py
+    - name: "Download docker-compose"
+      get_url:
+        url: "https://github.com/docker/compose/releases/download/1.28.5/docker-compose-Linux-x86_64"
+        dest: /usr/local/bin/docker-compose
+    - name: "Make docker-compose executable"
+      file:
+        path: /usr/local/bin/docker-compose
+        mode: 'a+x'

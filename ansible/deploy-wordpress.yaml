@@ -1,0 +1,13 @@
+- hosts: all
+  become: yes
+  tasks:
+    - name: "Create /wordpress/ dir"
+      file:
+        path: /wordpress
+        state: directory
+    - name: "Copy docker-compose to remote host"
+      copy:
+        src: "../resources/docker-compose.yaml"
+        dest: "/wordpress/"
+    - name: "Launch Wordpress"
+      shell: "docker-compose -f /wordpress/docker-compose.yaml up -d"

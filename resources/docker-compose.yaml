@@ -1,0 +1,15 @@
+version: '2'
+
+services:
+  wordpress:
+    container_name: wordpress
+    image: wordpress:latest
+    restart: always
+    ports:
+      - 80:80
+    environment:
+      WORDPRESS_DB_HOST: DB_PLACEHOLDER_SERVER
+      WORDPRESS_DB_USER: DB_PLACEHOLDER_USERNAME
+      WORDPRESS_DB_PASSWORD: DB_PLACEHOLDER_PASSWORD
+    volumes:
+      - /data/websites/tjth/wordpress:/var/www/html/
